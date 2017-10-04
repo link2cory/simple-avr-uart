@@ -1,0 +1,3 @@
+[submodule "simple_buffer"]
+	path = src/simple_buffer
+	url = https://github.com/link2cory/simple_buffer.git

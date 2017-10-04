@@ -48,7 +48,6 @@
 
 :cmock:
   :mock_prefix: mock_
-  :mock_path: test/mocks
   :when_no_prototypes: :warn
   :enforce_strict_ordering: TRUE
   :plugins:
