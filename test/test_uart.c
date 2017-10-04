@@ -19,7 +19,7 @@ void tearDown(void)
 /*******************************************************************************
 * Tests
 *******************************************************************************/
-void test_uart_NeedToImplement(void)
+void test_init(void)
 {
-    TEST_IGNORE_MESSAGE("Need to Implement uart");
+  uart_init();
 }
