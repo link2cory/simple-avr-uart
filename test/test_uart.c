@@ -126,3 +126,13 @@ void test_send_next_when_buf_empty(void)
   // test
   TEST_ASSERT(fake_existing_udr_val == fake_udr);
 }
+
+void test_receive_next(void)
+{
+  uint8_t fake_existing_udr_val = (uint8_t)rand();
+  fake_udr = fake_existing_udr_val;
+
+  sb_put_ExpectAndReturn(fake_rx_buf, fake_udr, SB_ERR_NONE);
+
+  uart_receive_next();
+}

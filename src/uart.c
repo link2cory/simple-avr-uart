@@ -46,3 +46,7 @@ void uart_send_next(void) {
     *_config.udr = data;
   }
 }
+
+void uart_receive_next(void) {
+  sb_put(rx_buf, *_config.udr);
+}
