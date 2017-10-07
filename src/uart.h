@@ -28,8 +28,6 @@ typedef struct uart_attr_t {
   uint8_t stop_bits;
   uint8_t character_size;
 
-  sb_attr_t rx_buf_attr;
-  sb_attr_t tx_buf_attr;
   sbd_t rx_buf;
   sbd_t tx_buf;
 } uart_attr_t;

@@ -21,9 +21,6 @@ static sbd_t tx_buf;
 *******************************************************************************/
 void uart_init(uart_attr_t params) {
   // construct the buffers
-  sb_construct(&params.rx_buf_attr, &params.rx_buf);
-  sb_construct(&params.tx_buf_attr, &params.tx_buf);
-
   rx_buf = params.rx_buf;
   tx_buf = params.tx_buf;
 
@@ -42,7 +39,7 @@ void uart_init(uart_attr_t params) {
 
 void uart_send_next(void) {
   uint8_t data;
-  if (sb_get(rx_buf, &data) == SB_ERR_NONE) {
+  if (sb_get(tx_buf, &data) == SB_ERR_NONE) {
     *_config.udr = data;
   }
 }

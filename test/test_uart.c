@@ -17,6 +17,8 @@
 #define MAX_BUFFER_SIZE 1
 #define EXPECTED_UCSRCA 0
 #define EXPECTED_UCSRCB 216
+#define FAKE_RX_BUF_D 0
+#define FAKE_TX_BUF_D 1
 /*******************************************************************************
 * Local Data
 *******************************************************************************/
@@ -28,11 +30,6 @@ static uint8_t fake_ucsrb;
 static uint8_t fake_ucsrc;
 static uint8_t fake_udr;
 
-// fake buffers
-static sbd_t fake_rx_buf;
-static sbd_t fake_tx_buf;
-static uint8_t fake_rx_buf_mem[MAX_BUFFER_SIZE];
-static uint8_t fake_tx_buf_mem[MAX_BUFFER_SIZE];
 /*******************************************************************************
 * Setup and Teardown
 *******************************************************************************/
@@ -41,21 +38,8 @@ void setUp(void)
   srand(time(NULL));
 
   // setup buffers
-  sb_attr_t fake_rx_buf_attr;
-  fake_rx_buf_attr.buf_mem = &fake_rx_buf_mem;
-  fake_rx_buf_attr.max_num_elem = MAX_BUFFER_SIZE;
-
-  sb_attr_t fake_tx_buf_attr;
-  fake_tx_buf_attr.buf_mem = &fake_tx_buf_mem;
-  fake_tx_buf_attr.max_num_elem = MAX_BUFFER_SIZE;
-
-  sb_construct_ExpectAndReturn(&fake_rx_buf_attr, &fake_rx_buf, SB_ERR_NONE);
-  sb_construct_ExpectAndReturn(&fake_tx_buf_attr, &fake_tx_buf, SB_ERR_NONE);
-
-  config.rx_buf_attr = fake_rx_buf_attr;
-  config.rx_buf = fake_rx_buf;
-  config.tx_buf_attr = fake_tx_buf_attr;
-  config.tx_buf = fake_tx_buf;
+  config.rx_buf = FAKE_RX_BUF_D;
+  config.tx_buf = FAKE_TX_BUF_D;
 
   // setup registers
   config.baud = 1;
@@ -97,8 +81,7 @@ void test_send_next(void)
   uint8_t ignore_data;
 
   // setup
-  sb_get_ExpectAndReturn(fake_rx_buf, &ignore_data, SB_ERR_NONE);
-  sb_get_IgnoreArg_sbd();
+  sb_get_ExpectAndReturn(FAKE_TX_BUF_D, &ignore_data, SB_ERR_NONE);
   sb_get_IgnoreArg_data();
   sb_get_ReturnThruPtr_data(&data);
 
@@ -116,8 +99,7 @@ void test_send_next_when_buf_empty(void)
 
   // setup
   fake_udr = fake_existing_udr_val;
-  sb_get_ExpectAndReturn(fake_rx_buf, &ignore_data, SB_ERR_BUF_EMPTY);
-  sb_get_IgnoreArg_sbd();
+  sb_get_ExpectAndReturn(FAKE_TX_BUF_D, &ignore_data, SB_ERR_BUF_EMPTY);
   sb_get_IgnoreArg_data();
 
   // excercise
@@ -132,7 +114,7 @@ void test_receive_next(void)
   uint8_t fake_existing_udr_val = (uint8_t)rand();
   fake_udr = fake_existing_udr_val;
 
-  sb_put_ExpectAndReturn(fake_rx_buf, fake_udr, SB_ERR_NONE);
+  sb_put_ExpectAndReturn(FAKE_RX_BUF_D, fake_udr, SB_ERR_NONE);
 
   uart_receive_next();
 }
