@@ -38,6 +38,6 @@ typedef struct uart_attr_t {
 * PUBLIC FUNCTION DECLARATIONS
 *******************************************************************************/
 void uart_init(uart_attr_t);
-void uart_send_next();
+void uart_send_next(void);
 
 #endif // _UART_H

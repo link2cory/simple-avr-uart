@@ -72,6 +72,11 @@ void setUp(void)
 
 void tearDown(void)
 {
+  fake_ubbr = 0;
+  fake_ucsra = 0;
+  fake_ucsrb = 0;
+  fake_ucsrc = 0;
+  fake_udr = 0;
 }
 
 /*******************************************************************************
@@ -86,7 +91,7 @@ void test_init_sets_config_vals(void)
   TEST_ASSERT(fake_ucsrc == 13);
 }
 
-void test_send_char(void)
+void test_send_next(void)
 {
   uint8_t data = (uint8_t)rand();
   uint8_t ignore_data;
@@ -102,4 +107,22 @@ void test_send_char(void)
 
   // test
   TEST_ASSERT(data == fake_udr);
+}
+
+void test_send_next_when_buf_empty(void)
+{
+  uint8_t fake_existing_udr_val = (uint8_t)rand();
+  uint8_t ignore_data;
+
+  // setup
+  fake_udr = fake_existing_udr_val;
+  sb_get_ExpectAndReturn(fake_rx_buf, &ignore_data, SB_ERR_BUF_EMPTY);
+  sb_get_IgnoreArg_sbd();
+  sb_get_IgnoreArg_data();
+
+  // excercise
+  uart_send_next();
+
+  // test
+  TEST_ASSERT(fake_existing_udr_val == fake_udr);
 }

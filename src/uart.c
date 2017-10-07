@@ -40,8 +40,9 @@ void uart_init(uart_attr_t params) {
   *_config.ucsrc = 13;
 }
 
-void uart_send_next() {
+void uart_send_next(void) {
   uint8_t data;
-  sb_get(rx_buf, &data);
-  *_config.udr = data;
+  if (sb_get(rx_buf, &data) == SB_ERR_NONE) {
+    *_config.udr = data;
+  }
 }
