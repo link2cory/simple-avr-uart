@@ -19,10 +19,12 @@
 #define EXPECTED_UCSRCB 216
 #define FAKE_RX_BUF_D 0
 #define FAKE_TX_BUF_D 1
+#define RX_BUF_FULL_BIT (1 << 7)
+
 /*******************************************************************************
 * Local Data
 *******************************************************************************/
-uart_attr_t config;
+static uart_attr_t config;
 // fake registers
 static uint16_t fake_ubbr;
 static uint8_t fake_ucsra;
@@ -111,10 +113,25 @@ void test_send_next_when_buf_empty(void)
 
 void test_receive_next(void)
 {
+  // setup
   uint8_t fake_existing_udr_val = (uint8_t)rand();
+  fake_ucsra |= RX_BUF_FULL_BIT;
   fake_udr = fake_existing_udr_val;
 
+  // test
   sb_put_ExpectAndReturn(FAKE_RX_BUF_D, fake_udr, SB_ERR_NONE);
 
+  // excercise
   uart_receive_next();
+}
+
+void test_receive_next_no_data(void)
+{
+  // setup
+  fake_ucsra &= ~RX_BUF_FULL_BIT;
+
+  // excercise
+  uart_receive_next();
+
+  // the test is that sb_put should NOT be called
 }
