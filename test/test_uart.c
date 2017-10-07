@@ -1,5 +1,6 @@
 #include "unity.h"
-
+#include <time.h>
+#include <stdlib.h>
 /*******************************************************************************
 * Mocks
 *******************************************************************************/
@@ -25,6 +26,7 @@ static uint16_t fake_ubbr;
 static uint8_t fake_ucsra;
 static uint8_t fake_ucsrb;
 static uint8_t fake_ucsrc;
+static uint8_t fake_udr;
 
 // fake buffers
 static sbd_t fake_rx_buf;
@@ -36,6 +38,8 @@ static uint8_t fake_tx_buf_mem[MAX_BUFFER_SIZE];
 *******************************************************************************/
 void setUp(void)
 {
+  srand(time(NULL));
+
   // setup buffers
   sb_attr_t fake_rx_buf_attr;
   fake_rx_buf_attr.buf_mem = &fake_rx_buf_mem;
@@ -59,6 +63,7 @@ void setUp(void)
   config.ucsra = &fake_ucsra;
   config.ucsrb = &fake_ucsrb;
   config.ucsrc = &fake_ucsrc;
+  config.udr = &fake_udr;
   config.stop_bits = UART_STOPBITS_TWO;
   config.character_size = UART_CHARACTER_SIZE_EIGHT;
 
@@ -81,7 +86,20 @@ void test_init_sets_config_vals(void)
   TEST_ASSERT(fake_ucsrc == 13);
 }
 
-void test_init_sets_character_size(void)
+void test_send_char(void)
 {
-  TEST_ASSERT(fake_ucsrc == 13);
+  uint8_t data = (uint8_t)rand();
+  uint8_t ignore_data;
+
+  // setup
+  sb_get_ExpectAndReturn(fake_rx_buf, &ignore_data, SB_ERR_NONE);
+  sb_get_IgnoreArg_sbd();
+  sb_get_IgnoreArg_data();
+  sb_get_ReturnThruPtr_data(&data);
+
+  // excercise
+  uart_send_next();
+
+  // test
+  TEST_ASSERT(data == fake_udr);
 }

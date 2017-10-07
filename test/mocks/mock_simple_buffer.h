@@ -27,30 +27,62 @@ void sb_construct_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, sb_err_t cmoc
 void sb_construct_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, sb_attr_t* attr, sbd_t* sbd, sb_err_t cmock_to_return);
 typedef sb_err_t (* CMOCK_sb_construct_CALLBACK)(sb_attr_t* attr, sbd_t* sbd, int cmock_num_calls);
 void sb_construct_StubWithCallback(CMOCK_sb_construct_CALLBACK Callback);
+#define sb_construct_ReturnThruPtr_attr(attr) sb_construct_CMockReturnMemThruPtr_attr(__LINE__, attr, sizeof(*attr))
+#define sb_construct_ReturnArrayThruPtr_attr(attr, cmock_len) sb_construct_CMockReturnMemThruPtr_attr(__LINE__, attr, (int)(cmock_len * (int)sizeof(*attr)))
+#define sb_construct_ReturnMemThruPtr_attr(attr, cmock_size) sb_construct_CMockReturnMemThruPtr_attr(__LINE__, attr, cmock_size)
+void sb_construct_CMockReturnMemThruPtr_attr(UNITY_LINE_TYPE cmock_line, sb_attr_t* attr, int cmock_size);
+#define sb_construct_ReturnThruPtr_sbd(sbd) sb_construct_CMockReturnMemThruPtr_sbd(__LINE__, sbd, sizeof(*sbd))
+#define sb_construct_ReturnArrayThruPtr_sbd(sbd, cmock_len) sb_construct_CMockReturnMemThruPtr_sbd(__LINE__, sbd, (int)(cmock_len * (int)sizeof(*sbd)))
+#define sb_construct_ReturnMemThruPtr_sbd(sbd, cmock_size) sb_construct_CMockReturnMemThruPtr_sbd(__LINE__, sbd, cmock_size)
+void sb_construct_CMockReturnMemThruPtr_sbd(UNITY_LINE_TYPE cmock_line, sbd_t* sbd, int cmock_size);
+#define sb_construct_IgnoreArg_attr() sb_construct_CMockIgnoreArg_attr(__LINE__)
+void sb_construct_CMockIgnoreArg_attr(UNITY_LINE_TYPE cmock_line);
+#define sb_construct_IgnoreArg_sbd() sb_construct_CMockIgnoreArg_sbd(__LINE__)
+void sb_construct_CMockIgnoreArg_sbd(UNITY_LINE_TYPE cmock_line);
 #define sb_destruct_IgnoreAndReturn(cmock_retval) sb_destruct_CMockIgnoreAndReturn(__LINE__, cmock_retval)
 void sb_destruct_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, sb_err_t cmock_to_return);
 #define sb_destruct_ExpectAndReturn(sbd, cmock_retval) sb_destruct_CMockExpectAndReturn(__LINE__, sbd, cmock_retval)
 void sb_destruct_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, sbd_t* sbd, sb_err_t cmock_to_return);
 typedef sb_err_t (* CMOCK_sb_destruct_CALLBACK)(sbd_t* sbd, int cmock_num_calls);
 void sb_destruct_StubWithCallback(CMOCK_sb_destruct_CALLBACK Callback);
+#define sb_destruct_ReturnThruPtr_sbd(sbd) sb_destruct_CMockReturnMemThruPtr_sbd(__LINE__, sbd, sizeof(*sbd))
+#define sb_destruct_ReturnArrayThruPtr_sbd(sbd, cmock_len) sb_destruct_CMockReturnMemThruPtr_sbd(__LINE__, sbd, (int)(cmock_len * (int)sizeof(*sbd)))
+#define sb_destruct_ReturnMemThruPtr_sbd(sbd, cmock_size) sb_destruct_CMockReturnMemThruPtr_sbd(__LINE__, sbd, cmock_size)
+void sb_destruct_CMockReturnMemThruPtr_sbd(UNITY_LINE_TYPE cmock_line, sbd_t* sbd, int cmock_size);
+#define sb_destruct_IgnoreArg_sbd() sb_destruct_CMockIgnoreArg_sbd(__LINE__)
+void sb_destruct_CMockIgnoreArg_sbd(UNITY_LINE_TYPE cmock_line);
 #define sb_put_IgnoreAndReturn(cmock_retval) sb_put_CMockIgnoreAndReturn(__LINE__, cmock_retval)
 void sb_put_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, sb_err_t cmock_to_return);
 #define sb_put_ExpectAndReturn(sbd, data, cmock_retval) sb_put_CMockExpectAndReturn(__LINE__, sbd, data, cmock_retval)
 void sb_put_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, sbd_t sbd, uint8_t data, sb_err_t cmock_to_return);
 typedef sb_err_t (* CMOCK_sb_put_CALLBACK)(sbd_t sbd, uint8_t data, int cmock_num_calls);
 void sb_put_StubWithCallback(CMOCK_sb_put_CALLBACK Callback);
+#define sb_put_IgnoreArg_sbd() sb_put_CMockIgnoreArg_sbd(__LINE__)
+void sb_put_CMockIgnoreArg_sbd(UNITY_LINE_TYPE cmock_line);
+#define sb_put_IgnoreArg_data() sb_put_CMockIgnoreArg_data(__LINE__)
+void sb_put_CMockIgnoreArg_data(UNITY_LINE_TYPE cmock_line);
 #define sb_get_IgnoreAndReturn(cmock_retval) sb_get_CMockIgnoreAndReturn(__LINE__, cmock_retval)
 void sb_get_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, sb_err_t cmock_to_return);
 #define sb_get_ExpectAndReturn(sbd, data, cmock_retval) sb_get_CMockExpectAndReturn(__LINE__, sbd, data, cmock_retval)
 void sb_get_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, sbd_t sbd, uint8_t* data, sb_err_t cmock_to_return);
 typedef sb_err_t (* CMOCK_sb_get_CALLBACK)(sbd_t sbd, uint8_t* data, int cmock_num_calls);
 void sb_get_StubWithCallback(CMOCK_sb_get_CALLBACK Callback);
+#define sb_get_ReturnThruPtr_data(data) sb_get_CMockReturnMemThruPtr_data(__LINE__, data, sizeof(*data))
+#define sb_get_ReturnArrayThruPtr_data(data, cmock_len) sb_get_CMockReturnMemThruPtr_data(__LINE__, data, (int)(cmock_len * (int)sizeof(*data)))
+#define sb_get_ReturnMemThruPtr_data(data, cmock_size) sb_get_CMockReturnMemThruPtr_data(__LINE__, data, cmock_size)
+void sb_get_CMockReturnMemThruPtr_data(UNITY_LINE_TYPE cmock_line, uint8_t* data, int cmock_size);
+#define sb_get_IgnoreArg_sbd() sb_get_CMockIgnoreArg_sbd(__LINE__)
+void sb_get_CMockIgnoreArg_sbd(UNITY_LINE_TYPE cmock_line);
+#define sb_get_IgnoreArg_data() sb_get_CMockIgnoreArg_data(__LINE__)
+void sb_get_CMockIgnoreArg_data(UNITY_LINE_TYPE cmock_line);
 #define sb_get_size_IgnoreAndReturn(cmock_retval) sb_get_size_CMockIgnoreAndReturn(__LINE__, cmock_retval)
 void sb_get_size_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, sb_err_t cmock_to_return);
 #define sb_get_size_ExpectAndReturn(sbd, cmock_retval) sb_get_size_CMockExpectAndReturn(__LINE__, sbd, cmock_retval)
 void sb_get_size_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, sbd_t sbd, sb_err_t cmock_to_return);
 typedef sb_err_t (* CMOCK_sb_get_size_CALLBACK)(sbd_t sbd, int cmock_num_calls);
 void sb_get_size_StubWithCallback(CMOCK_sb_get_size_CALLBACK Callback);
+#define sb_get_size_IgnoreArg_sbd() sb_get_size_CMockIgnoreArg_sbd(__LINE__)
+void sb_get_size_CMockIgnoreArg_sbd(UNITY_LINE_TYPE cmock_line);
 
 #if defined(__GNUC__) && !defined(__ICC) && !defined(__TMS470__)
 #pragma GCC diagnostic pop

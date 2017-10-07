@@ -24,6 +24,7 @@ typedef struct uart_attr_t {
   uint8_t *ucsra;
   uint8_t *ucsrb;
   uint8_t *ucsrc;
+  uint8_t *udr;
   uint8_t stop_bits;
   uint8_t character_size;
 
@@ -37,5 +38,6 @@ typedef struct uart_attr_t {
 * PUBLIC FUNCTION DECLARATIONS
 *******************************************************************************/
 void uart_init(uart_attr_t);
+void uart_send_next();
 
 #endif // _UART_H
