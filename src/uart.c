@@ -38,7 +38,7 @@ void uart_init(uart_attr_t params) {
   // initialize registers
   *_config.ubbr = params.baud;
   *_config.ucsra = 0;
-  *_config.ucsrb = 216;
+  *_config.ucsrb = 12;
   *_config.ucsrc = 13;
 }
 

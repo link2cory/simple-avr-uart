@@ -73,7 +73,7 @@ void test_init_sets_config_vals(void)
   TEST_ASSERT(fake_ubbr == 1);
 
   TEST_ASSERT(fake_ucsra == 0);
-  TEST_ASSERT(fake_ucsrb == 216);
+  TEST_ASSERT(fake_ucsrb == 12);
   TEST_ASSERT(fake_ucsrc == 13);
 }
 
